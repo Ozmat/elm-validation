@@ -31,11 +31,11 @@ all =
             [ fuzz string "converts a ValidationError into a List of error (Error)" <|
                 \s ->
                     toList (Error s)
-                        |> Expect.equal ([ s ])
+                        |> Expect.equal [ s ]
             , fuzz string "converts a ValidationError into a List of error (ErrorList)" <|
                 \s ->
                     toList (ErrorList [ s, s, s ])
-                        |> Expect.equal ([ s, s, s ])
+                        |> Expect.equal [ s, s, s ]
             ]
         , describe "Validation.errorMap"
             [ test "map a function on a ValidationError (Error)" <|
