@@ -2,12 +2,8 @@ sudo: false
 
 language: node_js
 
-env : 
-  - ELM_VERSION=0.18.0
-  - ELM_TEST_VERSION=0.18.12
-
 install:
-  - npm install -g elm@ELM_VERSION elm-test@ELM_TEST_VERSION elm-format
+  - npm install -g elm@0.18.0 elm-test@0.18.12 elm-format
   - travis_retry elm-package install -y
   - cd tests
   - travis_retry elm-package install -y
