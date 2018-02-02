@@ -26,7 +26,7 @@ type Result error value
 But sometimes we need more than just the basics (accumulate errors,
 specific map/chain).
 
-## Basic examples
+## Basic example
 
 Here is a basic validation example, validating non-empty `String` :
 
@@ -48,7 +48,7 @@ validationFunction ""   -- Failure (Error EmptyString)
 validationFunction "dd" -- Success "dd"
 ```
 
-## Advanced examples
+## Advanced example
 
 In this example we want a validation function that makes sure that a `String`
 input can be cast into an `Int` that is >= 1, <= 12 and divisible by 3.
@@ -106,5 +106,5 @@ validateOutput "notint" "0" "7" "13" -- Failure (ErrorList [GreaterThan12,NotDiv
 validateOutput "3" "6" "9" "12"      -- Success { a = 3, b = 6, c = 9, d = 12 }
 ```
 
-If you want to see another "advanced usage" of this library, have a look
+If you want to see another advanced example of this library, have a look
 at [elm-forms](http://package.elm-lang.org/packages/ozmat/elm-forms/latest/) [source code](https://github.com/ozmat/elm-forms).
