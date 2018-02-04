@@ -2,7 +2,7 @@
 
 A library for building basic [`Validation`](http://package.elm-lang.org/packages/ozmat/elm-validation/latest/Validation#Validation) in Elm
 
-[![Build Status](https://travis-ci.org/Ozmat/elm-validation.svg?branch=master)](https://travis-ci.org/Ozmat/elm-validation)
+[![Build Status](https://travis-ci.org/ozmat/elm-validation.svg?branch=master)](https://travis-ci.org/ozmat/elm-validation)
 
 ## Motivation
 
