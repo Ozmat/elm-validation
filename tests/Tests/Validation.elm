@@ -65,6 +65,16 @@ all =
                     validation "error" String.isEmpty "eeee"
                         |> Expect.equal (failure "error")
             ]
+        , describe "Validation.toResult"
+            [ fuzz string "Converts a Validation into a Result (Success)" <|
+                \s ->
+                    toResult (success s)
+                        |> Expect.equal (Ok s)
+            , fuzz string "Converts a Validation into a Result (Failure)" <|
+                \s ->
+                    toResult (failure s)
+                        |> Expect.equal (Err [ s ])
+            ]
         , describe "Validation.map"
             [ test "map a function if it's a successful validation" <|
                 \_ ->
