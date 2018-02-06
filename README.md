@@ -108,5 +108,4 @@ validateOutput "notint" "0" "7" "13" -- Failure (ErrorList [GreaterThan12,NotDiv
 validateOutput "3" "6" "9" "12"      -- Success { a = 3, b = 6, c = 9, d = 12 }
 ```
 
-If you want to see another advanced example of this library, have a look
-at [elm-forms](http://package.elm-lang.org/packages/ozmat/elm-forms/latest/) [source code](https://github.com/ozmat/elm-forms).
+If you want to see another example, have a look at [elm-forms](http://package.elm-lang.org/packages/ozmat/elm-forms/latest/) ([source code](https://github.com/ozmat/elm-forms)).
