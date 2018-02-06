@@ -11,6 +11,7 @@ module Validation
         , success
         , validation
         , toResult
+        , toList
         , map
         , mapError
         , mapValidationError
@@ -43,7 +44,7 @@ module Validation
 
 ### Common Helpers
 
-@docs failure, success, validation, toResult
+@docs failure, success, validation, toResult, toList
 
 
 ### Map
@@ -217,7 +218,7 @@ validation err valid a =
         Failure (Error err)
 
 
-{-| Converts a `Validation` into a `Result`
+{-| Converts a `Validation` to a `Result`
 
     toResult (Success "valid")
         |> Expect.equal (Ok "valid")
@@ -234,6 +235,26 @@ toResult validation =
 
         Failure ve ->
             Err (errorToList ve)
+
+
+{-| Converts a `Validation` to a `List`. The `List` is empty if it's a
+successful validation or contains the errors if it's failed validation.
+
+    toList (Success "valid")
+        |> Expect.equal ([])
+
+    toList (Failure (Error "error"))
+        |> Expect.equal ([ "error" ])
+
+-}
+toList : Validation err a -> List err
+toList validation =
+    case validation of
+        Success a ->
+            []
+
+        Failure ve ->
+            errorToList ve
 
 
 

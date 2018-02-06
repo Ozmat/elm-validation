@@ -66,14 +66,24 @@ all =
                         |> Expect.equal (failure "error")
             ]
         , describe "Validation.toResult"
-            [ fuzz string "Converts a Validation into a Result (Success)" <|
+            [ fuzz string "Converts a Validation to a Result (Success)" <|
                 \s ->
                     toResult (success s)
                         |> Expect.equal (Ok s)
-            , fuzz string "Converts a Validation into a Result (Failure)" <|
+            , fuzz string "Converts a Validation to a Result (Failure)" <|
                 \s ->
                     toResult (failure s)
                         |> Expect.equal (Err [ s ])
+            ]
+        , describe "Validation.toList"
+            [ fuzz string "Converts a Validation to a List (Success)" <|
+                \s ->
+                    toList (success s)
+                        |> Expect.equal ([])
+            , fuzz string "Converts a Validation to a List (Failure)" <|
+                \s ->
+                    toList (failure s)
+                        |> Expect.equal ([ s ])
             ]
         , describe "Validation.map"
             [ test "map a function if it's a successful validation" <|
