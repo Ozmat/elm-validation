@@ -3,7 +3,7 @@ module Validation
         ( -- Validation error
           ValidationError(..)
         , append
-        , toList
+        , errorToList
         , errorMap
           -- Validation
         , Validation(..)
@@ -28,7 +28,7 @@ module Validation
 
 ### Common Helpers
 
-@docs append, toList
+@docs append, errorToList
 
 
 ### Map
@@ -113,15 +113,15 @@ append ve1 ve2 =
 
 {-| Converts a `ValidationError` into a `List err`
 
-    toList (Error 1)
+    errorToList (Error 1)
         |> Expect.equal [ 1 ]
 
-    toList (ErrorList [ 1, 2, 3 ])
+    errorToList (ErrorList [ 1, 2, 3 ])
         |> Expect.equal [ 1, 2, 3 ]
 
 -}
-toList : ValidationError err -> List err
-toList ve =
+errorToList : ValidationError err -> List err
+errorToList ve =
     case ve of
         Error e ->
             [ e ]
@@ -233,7 +233,7 @@ toResult validation =
             Ok a
 
         Failure ve ->
-            Err (toList ve)
+            Err (errorToList ve)
 
 
 

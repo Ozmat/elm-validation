@@ -27,14 +27,14 @@ all =
                     append (ErrorList [ 1, 2 ]) (ErrorList [ 3, 4 ])
                         |> Expect.equal (ErrorList [ 1, 2, 3, 4 ])
             ]
-        , describe "Validation.toList"
+        , describe "Validation.errorToList"
             [ fuzz string "converts a ValidationError into a List of error (Error)" <|
                 \s ->
-                    toList (Error s)
+                    errorToList (Error s)
                         |> Expect.equal [ s ]
             , fuzz string "converts a ValidationError into a List of error (ErrorList)" <|
                 \s ->
-                    toList (ErrorList [ s, s, s ])
+                    errorToList (ErrorList [ s, s, s ])
                         |> Expect.equal [ s, s, s ]
             ]
         , describe "Validation.errorMap"
