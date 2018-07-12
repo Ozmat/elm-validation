@@ -47,14 +47,18 @@ all =
                     errorMap increment (ErrorList [ 1, 2, 3 ])
                         |> Expect.equal (ErrorList [ 2, 3, 4 ])
             ]
-        , fuzz string "Validation.failure returns a failed Validation" <|
-            \s ->
-                failure s
-                    |> Expect.equal (Failure (Error s))
         , fuzz string "Validation.success returns a successful Validation" <|
             \s ->
                 success s
                     |> Expect.equal (Success s)
+        , fuzz string "Validation.failure returns a failed Validation" <|
+            \s ->
+                failure s
+                    |> Expect.equal (Failure (Error s))
+        , fuzz string "Validation.failureWithList returns a failed Validation with an ErrorList" <|
+            \s ->
+                failureWithList [ s, s ]
+                    |> Expect.equal (Failure (ErrorList [ s, s ]))
         , describe "Validation.validation"
             [ test "helps creating a basic Validation function (Success)" <|
                 \_ ->

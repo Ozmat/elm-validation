@@ -7,8 +7,9 @@ module Validation
         , errorMap
           -- Validation
         , Validation(..)
-        , failure
         , success
+        , failure
+        , failureWithList
         , validation
         , toResult
         , toList
@@ -44,7 +45,7 @@ module Validation
 
 ### Common Helpers
 
-@docs failure, success, validation, toResult, toList
+@docs success, failure, failureWithList, validation, toResult, toList
 
 
 ### Map
@@ -172,6 +173,17 @@ type Validation err a
 -- Common Helpers
 
 
+{-| Returns a successful `Validation`
+
+    success "output value"
+        |> Expect.equal (Success "output value")
+
+-}
+success : a -> Validation err a
+success =
+    Success
+
+
 {-| Returns a failed `Validation`
 
     failure "not valid"
@@ -183,15 +195,15 @@ failure err =
     Failure (Error err)
 
 
-{-| Returns a successful `Validation`
+{-| Returns a failed `Validation` with an `ErrorList`
 
-    success "output value"
-        |> Expect.equal (Success "output value")
+    failureWithList ["error1", "error2"]
+        |> Expect.equal (Failure (ErrorList ["error1", "error2"]))
 
 -}
-success : a -> Validation err a
-success =
-    Success
+failureWithList : List err -> Validation err a
+failureWithList l =
+    Failure (ErrorList l)
 
 
 {-| Helps creating a basic `Validation` function
