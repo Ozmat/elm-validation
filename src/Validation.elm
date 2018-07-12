@@ -18,6 +18,8 @@ module Validation
         , mapValidationError
         , andMap
         , andMapAcc
+        , andSkip
+        , andSkipAcc
         )
 
 {-| This library aims to provide basic `Validation` in Elm
@@ -55,7 +57,7 @@ module Validation
 
 ### Chaining
 
-@docs andMap, andMapAcc
+@docs andMap, andMapAcc, andSkip, andSkipAcc
 
 -}
 
@@ -406,7 +408,7 @@ continue and accumulate all the `Failure`s
     success Example
         |> andMapAcc (failure "error1")
         |> andMapAcc (failure "error2")
-        |> Expect.equal (Failure (ErrorList [ "error2", "error1" ]))
+        |> Expect.equal (failureWithList [ "error2", "error1" ])
 
 -}
 andMapAcc : Validation err a -> Validation err (a -> b) -> Validation err b
@@ -420,3 +422,93 @@ andMapAcc va vf =
 
         ( _, Success f ) ->
             map f va
+
+
+{-| Chain together many `Validation` by binding them and skipping the current
+result. Same behavior than `andMap` but skip the current result
+
+    type alias Example =
+        { a : String
+        , b : String
+        }
+
+    success Example
+        |> andMap (success "valid1")
+        |> andSkip (success "whatever")
+        |> andMap (success "valid2")
+        |> Expect.equal (success (Example "valid1" "valid2"))
+
+    success Example
+        |> andMap (failure "error1")
+        |> andSkip (success "")
+        |> andMap (success "")
+        |> Expect.equal (failure "error1")
+
+    success Example
+        |> andMap (success "")
+        |> andSkip (failure "error2")
+        |> andMap (success "")
+        |> Expect.equal (failure "error2")
+
+    success Example
+        |> andMap (failure "error1")
+        |> andSkip (failure "error2")
+        |> andMap (success "")
+        |> Expect.equal (failure "error1")
+
+-}
+andSkip : Validation err a -> Validation err b -> Validation err b
+andSkip va vf =
+    case ( va, vf ) of
+        ( _, Failure ve ) ->
+            Failure ve
+
+        ( Failure ve, Success _ ) ->
+            Failure ve
+
+        ( Success _, Success _ ) ->
+            vf
+
+
+{-| Chain together many `Validation` by accumulating them and skipping the
+current result. Same behavior than `andMapAcc` but skip the current result
+
+    success Example
+        |> andMapAcc (success "valid1")
+        |> andSkipAcc (success "whatever")
+        |> andMapAcc (success "valid2")
+        |> Expect.equal (success (Example "valid1" "valid2"))
+
+    success Example
+        |> andMapAcc (failure "error1")
+        |> andSkipAcc (success "")
+        |> andMapAcc (success "")
+        |> Expect.equal (failure "error1")
+
+    success Example
+        |> andMapAcc (success "")
+        |> andSkipAcc (failure "error2")
+        |> andMapAcc (success "")
+        |> Expect.equal (failure "error2")
+
+    success Example
+        |> andMapAcc (failure "error1")
+        |> andSkipAcc (failure "error2")
+        |> andMapAcc (success "")
+        |> Expect.equal (failureWithList [ "error2", "error1" ])
+
+-}
+andSkipAcc : Validation err a -> Validation err b -> Validation err b
+andSkipAcc va vf =
+    case ( va, vf ) of
+        ( Success _, Failure ve ) ->
+            Failure ve
+
+        ( Failure ve1, Failure ve2 ) ->
+            Failure (append ve1 ve2)
+
+        ( Failure ve, Success _ ) ->
+            Failure ve
+
+        ( Success _, Success _ ) ->
+            vf
