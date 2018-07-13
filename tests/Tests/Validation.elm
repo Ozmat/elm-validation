@@ -1,8 +1,8 @@
 module Tests.Validation exposing (..)
 
 import Expect
-import Test exposing (..)
 import Fuzz exposing (string)
+import Test exposing (..)
 import Validation exposing (..)
 
 
@@ -83,11 +83,11 @@ all =
             [ fuzz string "converts a Validation to a List (Success)" <|
                 \s ->
                     toList (success s)
-                        |> Expect.equal ([])
+                        |> Expect.equal []
             , fuzz string "converts a Validation to a List (Failure)" <|
                 \s ->
                     toList (failure s)
-                        |> Expect.equal ([ s ])
+                        |> Expect.equal [ s ]
             ]
         , describe "Validation.map"
             [ test "map a function over a successful Validation" <|

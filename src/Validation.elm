@@ -1,25 +1,23 @@
 module Validation
     exposing
-        ( -- Validation error
-          ValidationError(..)
-        , append
-        , errorToList
-        , errorMap
-          -- Validation
-        , Validation(..)
-        , success
-        , failure
-        , failureWithList
-        , validation
-        , toResult
-        , toList
-        , map
-        , mapError
-        , mapValidationError
+        ( Validation(..)
+        , ValidationError(..)
         , andMap
         , andMapAcc
         , andSkip
         , andSkipAcc
+        , append
+        , errorMap
+        , errorToList
+        , failure
+        , failureWithList
+        , map
+        , mapError
+        , mapValidationError
+        , success
+        , toList
+        , toResult
+        , validation
         )
 
 {-| This library aims to provide basic `Validation` in Elm
