@@ -1,5 +1,5 @@
 {
-    "version": "2.1.0",
+    "version": "2.2.0",
     "summary": "A library for building basic Validation in Elm",
     "repository": "https://github.com/ozmat/elm-validation.git",
     "license": "BSD-3-Clause",
