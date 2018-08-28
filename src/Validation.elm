@@ -1,24 +1,12 @@
-module Validation
-    exposing
-        ( Validation(..)
-        , ValidationError(..)
-        , andMap
-        , andMapAcc
-        , andSkip
-        , andSkipAcc
-        , append
-        , errorMap
-        , errorToList
-        , failure
-        , failureWithList
-        , map
-        , mapError
-        , mapValidationError
-        , success
-        , toList
-        , toResult
-        , validation
-        )
+module Validation exposing
+    ( ValidationError(..)
+    , append, errorToList
+    , errorMap
+    , Validation(..)
+    , success, failure, failureWithList, validation, toResult, toList
+    , map, mapError, mapValidationError
+    , andMap, andMapAcc, andSkip, andSkipAcc
+    )
 
 {-| This library aims to provide basic `Validation` in Elm
 
@@ -161,7 +149,7 @@ errorMap f ve =
 
     Failure (Error "not valid")
 
-    Failure (ErrorList ["too short", "forbidden character"])
+    Failure (ErrorList [ "too short", "forbidden character" ])
 
 -}
 type Validation err a
@@ -197,8 +185,8 @@ failure err =
 
 {-| Returns a failed `Validation` with an `ErrorList`
 
-    failureWithList ["error1", "error2"]
-        |> Expect.equal (Failure (ErrorList ["error1", "error2"]))
+    failureWithList [ "error1", "error2" ]
+        |> Expect.equal (Failure (ErrorList [ "error1", "error2" ]))
 
 -}
 failureWithList : List err -> Validation err a
@@ -226,6 +214,7 @@ validation : err -> (a -> Bool) -> a -> Validation err a
 validation err valid a =
     if valid a then
         Success a
+
     else
         Failure (Error err)
 
@@ -240,8 +229,8 @@ validation err valid a =
 
 -}
 toResult : Validation err a -> Result (List err) a
-toResult validation =
-    case validation of
+toResult va =
+    case va of
         Success a ->
             Ok a
 
@@ -253,15 +242,15 @@ toResult validation =
 successful validation or contains the errors if it's failed validation.
 
     toList (Success "valid")
-        |> Expect.equal ([])
+        |> Expect.equal []
 
     toList (Failure (Error "error"))
-        |> Expect.equal ([ "error" ])
+        |> Expect.equal [ "error" ]
 
 -}
 toList : Validation err a -> List err
-toList validation =
-    case validation of
+toList va =
+    case va of
         Success a ->
             []
 
@@ -283,8 +272,8 @@ toList validation =
 
 -}
 map : (a -> b) -> Validation err a -> Validation err b
-map f validation =
-    case validation of
+map f va =
+    case va of
         Success a ->
             Success (f a)
 
@@ -305,8 +294,8 @@ map f validation =
 
 -}
 mapError : (err1 -> err2) -> Validation err1 a -> Validation err2 a
-mapError f validation =
-    mapValidationError (errorMap f) validation
+mapError f va =
+    mapValidationError (errorMap f) va
 
 
 {-| Map a function over a failed `Validation` on the `ValidationError`
@@ -328,8 +317,8 @@ mapError f validation =
 
 -}
 mapValidationError : (ValidationError err1 -> ValidationError err2) -> Validation err1 a -> Validation err2 a
-mapValidationError f validation =
-    case validation of
+mapValidationError f va =
+    case va of
         Success a ->
             Success a
 

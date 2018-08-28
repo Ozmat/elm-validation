@@ -1,4 +1,4 @@
-module Tests.Validation exposing (..)
+module Tests.Validation exposing (all)
 
 import Expect
 import Fuzz exposing (string)
